@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 
+
 function App() {
   return (
     <div className="App">
@@ -17,8 +18,13 @@ function App() {
         >
           Learn React
         </a>
+        <input
+        type="text"
+        name="chatbox"
+        />
       </header>
     </div>
+
   );
 }
 
