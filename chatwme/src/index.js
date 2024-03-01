@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import Login from  './Login'
 import reportWebVitals from './reportWebVitals';
 
 //import {initializeApp} from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
@@ -31,7 +30,9 @@ const router = createBrowserRouter([
   },
   {
     path: "about",
-    element: <div>About</div>,
+    element: <div>
+      <p>halloo</p>
+    </div>,
   },
 ]);
 
