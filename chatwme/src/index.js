@@ -5,17 +5,46 @@ import App from './App';
 import Login from  './Login'
 import reportWebVitals from './reportWebVitals';
 
+//import {initializeApp} from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
+//import {getFirestore} from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
+
+import { createRoot } from "react-dom/client";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Route,
+  Link,
+} from "react-router-dom";
+
+
+//const firestore = getFirestore(firebaseApp);
+
+const router = createBrowserRouter([
+  {
+    path: "login",
+    element: (
+      <div>
+        <h1>Hello World</h1>
+        <Link to="about">About Us</Link>
+      </div>
+    ),
+  },
+  {
+    path: "about",
+    element: <div>About</div>,
+  },
+]);
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+    <><RouterProvider router={router} /><React.StrictMode>
     <App />
-  </React.StrictMode>
+  </React.StrictMode></>
 );
 
-const login = ReactDOM.createRoot(document.getElementById('login'));
-login.render(
-<Login />
-);
+
+
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
