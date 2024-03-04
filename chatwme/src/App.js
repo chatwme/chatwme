@@ -1,15 +1,21 @@
 import logo from './logo.svg';
 import './App.css';
 import {useState } from 'react'
+import ChatMsg from './chatMsg';
 
 
 
 function App() {
   const [message, setMessage] = useState('');
+  const [text] = Array("Hello");
+  function MessageBox(message){
+    return(<a>{message}</a>)
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
     console.log('You clicked submit. with ', message );
+    message.push(text);
   }
 
   const handleChange = (event) => {
@@ -32,6 +38,7 @@ function App() {
         >
           Learn React
         </a>
+        {text && text.map(msg => <ChatMsg side={"right"} message={text} />)}
         <input onChange={handleChange} placeholder="say something nice" />
 
         <button onClick={handleSubmit} type="submit">🕊️</button>

@@ -37,8 +37,19 @@ class Login {
     }
 
     setlogin_name(newname){
-        
+        this.login_name = newname;
     }
+
+    setlogin_password(newpassword){
+        this.login_name = newpassword;
+    }    
+    
+    setlogin_id(newid){
+    	this.login_id = newid;
+    }
+
+    
+    
 }
 // Firestore data converter
 var loginconverter = {
@@ -48,14 +59,5 @@ var loginconverter = {
             login_password: login.login_password,
             login_id: login.login_id
             };
-    },
-    fromFirestore: function(snapshot, options){
-        const data = snapshot.data(options);
-        return new Login(data.login_name, data.login_password, data.login_id);
     }
-    
-    // Set with cityConverter
-db.collection("cities").doc("LA")
-.withConverter(cityConverter)
-.set(new City("Los Angeles", "CA", "USA"));
-};
+}
