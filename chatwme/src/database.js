@@ -64,19 +64,19 @@ class Login {
     	this.login_id = newid;
     }
 }
-    db.collection("users").add({
-        first: "Ada",
-        last: "Lovelace",
-        born: 1815
-    }
+    const firestore = getFirestore();
+
     const login = doc(firestore, 'special');
     function writeLogin(){
         const docData = {
-            name: ''
-        }
+            name: 'Jonas',
+            password: '1234',
+            id: '187'
+        };
+        setDoc(login, docData); 
     }
     
-}
+
 // Firestore data converter
 // var loginconverter = {
 //     toFirestore: function(login) {
