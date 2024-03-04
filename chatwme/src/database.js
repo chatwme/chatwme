@@ -1,6 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
+
+
 import firebase from "firebase/app";
 import "firebase/firestore";
 
@@ -47,17 +49,20 @@ class Login {
     setlogin_id(newid){
     	this.login_id = newid;
     }
-
-    
+}
+    db.collection("users").add({
+        first: "Ada",
+        last: "Lovelace",
+        born: 1815
     
 }
 // Firestore data converter
-var loginconverter = {
-    toFirestore: function(login) {
-        return {
-            login_name: login.login_name,
-            login_password: login.login_password,
-            login_id: login.login_id
-            };
-    }
-}
+// var loginconverter = {
+//     toFirestore: function(login) {
+//         return {
+//             login_name: login.login_name,
+//             login_password: login.login_password,
+//             login_id: login.login_id
+//             };
+//     }
+// }
