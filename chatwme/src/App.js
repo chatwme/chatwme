@@ -14,13 +14,13 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 function App() {
   const [message, setMessage] = useState('');
-  const [text] = Array("Hello");
+  var [text] = Array("Hello");
 
 
   function handleSubmit(e) {
     e.preventDefault();
     console.log('You clicked submit. with ', message );
-    message.push(text);
+    [text] = Array(message);
   }
 
   const handleChange = (event) => {

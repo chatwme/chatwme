@@ -68,6 +68,13 @@ class Login {
         first: "Ada",
         last: "Lovelace",
         born: 1815
+    }
+    const login = doc(firestore, 'special');
+    function writeLogin(){
+        const docData = {
+            name: ''
+        }
+    }
     
 }
 // Firestore data converter
