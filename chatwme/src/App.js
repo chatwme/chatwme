@@ -2,7 +2,25 @@ import logo from './logo.svg';
 import './App.css';
 import {useState } from 'react'
 
+import firebase from 'firebase/app'
+import 'firebase/firestore'
+import 'firebase/auth'
 
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
+
+const auth = firebase.auth();
+const firestore = firebase.firestore();
+
+firebase.initializeApp({
+  apiKey: "AIzaSyB6ALPlZWpPpYiwt5VNzx5LDHaUIo0V91o",
+  authDomain: "chatwme-6c657.firebaseapp.com",
+  projectId: "chatwme-6c657",
+  storageBucket: "chatwme-6c657.appspot.com",
+  messagingSenderId: "1095383936548",
+  appId: "1:1095383936548:web:7683ba600a7abfef2072b1",
+  measurementId: "G-XBPLV8MK6Z"
+})
 
 function App() {
   const [message, setMessage] = useState('');
