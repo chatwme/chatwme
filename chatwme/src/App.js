@@ -59,9 +59,9 @@ function App() {
       </header>
 
       <section>
-        { user ? <""/> : <SignIn /> }
+        { user ? <App/> : <SignIn /> }
       </section>
-      
+
     </div>
 
   );
@@ -85,3 +85,4 @@ function SignOut() {
   )
 }
 export default App;
+//export {firebase, App,}
