@@ -57,6 +57,11 @@ function App() {
         <button onClick={handleSubmit} type="submit">🕊️</button>
 
       </header>
+
+      <section>
+        { user ? <""/> : <SignIn /> }
+      </section>
+      
     </div>
 
   );
