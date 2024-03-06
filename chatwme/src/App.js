@@ -1,21 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
-import {useState } from 'react'
+import {useState } from 'react';
 import ChatMsg from './chatMsg';
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-import 'firebase/auth';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 import 'firebase/analytics';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-
-import firebase from 'firebase/app'
-import 'firebase/firestore'
-import 'firebase/auth'
-
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { serverTimestamp } from 'firebase/firestore';
 
 const auth = firebase.auth();
@@ -72,7 +65,7 @@ function Chat(){
     e.preventDefault();
     console.log('You clicked submit. with ', message );
     [text] = Array(message);
-    await messagesRef.add({text: message, time: serverTimestamp})
+    messagesRef.add({text: message, time: serverTimestamp})
   }
 
   const handleChange = (event) => {
@@ -109,16 +102,15 @@ function SignOut() {
     <button onClick={() => auth.SignOut()}>Sign Out</button>
   )
 }
-    const login = doc(firestore, 'special');
+    const login = firestore.doc(firestore, 'special');
     function writeLogin(){
         const docData = {
             name: 'Jonas',
             password: '1234',
             id: '187'
         };
-        setDoc(login, docData); 
+        firestore.setDoc(login, docData); 
     }
     
-writeLogin ();
 export default App;
 //export {firebase, App,}
