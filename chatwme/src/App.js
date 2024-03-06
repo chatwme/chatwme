@@ -16,6 +16,7 @@ import 'firebase/auth'
 
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { serverTimestamp } from 'firebase/firestore';
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
@@ -71,7 +72,7 @@ function Chat(){
     e.preventDefault();
     console.log('You clicked submit. with ', message );
     [text] = Array(message);
-    await messagesRef.add
+    await messagesRef.add({text: message, time: serverTimestamp})
   }
 
   const handleChange = (event) => {
@@ -108,5 +109,16 @@ function SignOut() {
     <button onClick={() => auth.SignOut()}>Sign Out</button>
   )
 }
+    const login = doc(firestore, 'special');
+    function writeLogin(){
+        const docData = {
+            name: 'Jonas',
+            password: '1234',
+            id: '187'
+        };
+        setDoc(login, docData); 
+    }
+    
+writeLogin ();
 export default App;
 //export {firebase, App,}
