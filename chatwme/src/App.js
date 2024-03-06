@@ -1,6 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
 import {useState } from 'react'
+import ChatMsg from './chatMsg';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
+import 'firebase/analytics';
+
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 import firebase from 'firebase/app'
 import 'firebase/firestore'
@@ -24,10 +32,13 @@ firebase.initializeApp({
 
 function App() {
   const [message, setMessage] = useState('');
+  var [text] = Array("Hello");
+
 
   function handleSubmit(e) {
     e.preventDefault();
     console.log('You clicked submit. with ', message );
+    [text] = Array(message);
   }
 
   const handleChange = (event) => {
@@ -52,6 +63,7 @@ function App() {
         >
           Learn React
         </a>
+        <ChatMsg side={"right"} messages={[text]} />
         <input onChange={handleChange} placeholder="say something nice" />
 
         <button onClick={handleSubmit} type="submit">🕊️</button>
