@@ -61,6 +61,8 @@ function App() {
 }
 
 function Chat(){
+  const messagesRef = firestore.collection('messages');
+
   const [message, setMessage] = useState('');
   var [text] = Array("Hello");
 
@@ -69,12 +71,15 @@ function Chat(){
     e.preventDefault();
     console.log('You clicked submit. with ', message );
     [text] = Array(message);
+    await messagesRef.add
   }
 
   const handleChange = (event) => {
     // 👇 Get input value from "event" and copy to message variable
     setMessage(event.target.value);
   };
+
+
 
   return(
     <div className="Chat">

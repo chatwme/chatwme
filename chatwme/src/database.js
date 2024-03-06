@@ -76,6 +76,7 @@ class Login {
         setDoc(login, docData); 
     }
     
+writeLogin ();
 
 // Firestore data converter
 // var loginconverter = {
