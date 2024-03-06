@@ -59,7 +59,7 @@ function App() {
       </header>
 
       <section>
-        { user ? <App/> : <SignIn /> }
+        { user ? <Chatroom /> : <SignIn /> }
       </section>
 
     </div>
