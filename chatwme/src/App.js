@@ -31,22 +31,7 @@ firebase.initializeApp({
 })
 
 function App() {
-  const [message, setMessage] = useState('');
-  var [text] = Array("Hello");
-
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    console.log('You clicked submit. with ', message );
-    [text] = Array(message);
-  }
-
-  const handleChange = (event) => {
-    // 👇 Get input value from "event"
-    setMessage(event.target.value);
-  };
-
-  const [user] = useAuthState(auth);
+   const [user] = useAuthState(auth);
 
   return (
     <div className="App">
@@ -63,20 +48,42 @@ function App() {
         >
           Learn React
         </a>
-        <ChatMsg side={"right"} messages={[text]} />
-        <input onChange={handleChange} placeholder="say something nice" />
-
-        <button onClick={handleSubmit} type="submit">🕊️</button>
-
+        
       </header>
 
       <section>
-        { user ? <Chatroom /> : <SignIn /> }
+        { user ? <Chat /> : <SignIn /> }
       </section>
 
     </div>
 
   );
+}
+
+function Chat(){
+  const [message, setMessage] = useState('');
+  var [text] = Array("Hello");
+
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log('You clicked submit. with ', message );
+    [text] = Array(message);
+  }
+
+  const handleChange = (event) => {
+    // 👇 Get input value from "event" and copy to message variable
+    setMessage(event.target.value);
+  };
+
+  return(
+    <div className="Chat">
+  <ChatMsg side={"right"} messages={[text]} />
+  <input onChange={handleChange} placeholder="say something nice" />
+
+  <button onClick={handleSubmit} type="submit">🕊️</button>
+  </div>
+);
 }
 
 function SignIn() {
