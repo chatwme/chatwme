@@ -23,22 +23,21 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <div>
-        <h1>Hello World</h1>
-        <Link to="about">About Us</Link>
       </div>
     ),
   },
   {
     path: "about",
     element: <div>
-      <p>halloo</p>
     </div>,
   },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <><RouterProvider router={router} /><React.StrictMode>
+    <>
+   <RouterProvider router={router} />
+    <React.StrictMode>
     <App />
   </React.StrictMode></>
 );

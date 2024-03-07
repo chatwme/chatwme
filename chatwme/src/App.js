@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import {useState } from 'react';
+import { useState } from 'react';
 import ChatMsg from './chatMsg';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
@@ -8,11 +8,8 @@ import 'firebase/compat/firestore';
 import 'firebase/analytics';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { serverTimestamp } from 'firebase/firestore';
-
-const auth = firebase.auth();
-const firestore = firebase.firestore();
+import { useCollectionData, useCollectionDataOnce } from 'react-firebase-hooks/firestore';
+import { serverTimestamp, getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
 
 firebase.initializeApp({
   apiKey: "AIzaSyB6ALPlZWpPpYiwt5VNzx5LDHaUIo0V91o",
@@ -24,8 +21,12 @@ firebase.initializeApp({
   measurementId: "G-XBPLV8MK6Z"
 })
 
+const auth = firebase.auth();
+const firestore = firebase.firestore();
+
+
 function App() {
-   const [user] = useAuthState(auth);
+  const [user] = useAuthState(auth);
 
   return (
     <div className="App">
@@ -42,11 +43,11 @@ function App() {
         >
           Learn React
         </a>
-        
+
       </header>
 
       <section>
-        { user ? <Chat /> : <SignIn /> }
+        {user ? <Chat /> : <SignIn />}
       </section>
 
     </div>
@@ -54,44 +55,57 @@ function App() {
   );
 }
 
-function Chat(){
-  const messagesRef = firestore.collection('messages');
+const fetchData = async () => {
+  const citiesRef = firestore.collection('messages');
+  const snapshot = await citiesRef.where('userid', '==', 123).get();
 
+  if (snapshot.empty) {
+    console.log('Keine übereinstimmenden Dokumente.');
+    return [];
+  }  
+
+  const data = [];
+  snapshot.forEach(doc => {
+    data.push(doc.data());
+  });
+
+  return data;
+}
+function Chat() {
+  //initialize variables
+  const messagesRef = firestore.collection("messages");
   const [message, setMessage] = useState('');
-  var [text] = Array("Hello");
 
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log('You clicked submit. with ', message );
-    [text] = Array(message);
-    messagesRef.add({text: message, time: serverTimestamp})
+    console.log('You clicked submit. with ', message);
+    const res = messagesRef.add({ text: message, userid: auth.currentUser.uid, time: serverTimestamp() });
+    console.log('Added document with ID: ', res.id);
   }
 
   const handleChange = (event) => {
     // 👇 Get input value from "event" and copy to message variable
     setMessage(event.target.value);
   };
+  fetchData().then(data => console.log(data));
 
-
-
-  return(
+  return (
     <div className="Chat">
-  <ChatMsg side={"right"} messages={[text]} />
-  <input onChange={handleChange} placeholder="say something nice" />
-
-  <button onClick={handleSubmit} type="submit">🕊️</button>
-  </div>
-);
+      
+      <input onChange={handleChange} placeholder="say something nice" />
+      <button onClick={handleSubmit} type="submit">🕊️</button>
+    </div>
+  );
 }
 
 function SignIn() {
-   const signInWithGoogle = () => {
+  const signInWithGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider);
-   }
+  }
 
-  return(
+  return (
     <button onClick={signInWithGoogle}>Sign in with Google</button>
   )
 }
@@ -102,15 +116,15 @@ function SignOut() {
     <button onClick={() => auth.SignOut()}>Sign Out</button>
   )
 }
-    const login = firestore.doc(firestore, 'special');
-    function writeLogin(){
-        const docData = {
-            name: 'Jonas',
-            password: '1234',
-            id: '187'
-        };
-        firestore.setDoc(login, docData); 
-    }
-    
+function writeLogin() {
+  const login = firestore.doc(firestore, 'special');//du dummer nutten 
+  const docData = {
+    name: 'Jonas',
+    password: '1234',
+    id: '187'
+  };
+  firestore.setDoc(login, docData);
+}
+
 export default App;
 //export {firebase, App,}
