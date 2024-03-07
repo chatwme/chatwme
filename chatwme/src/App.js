@@ -91,12 +91,14 @@ function Chat() {
   const [messages, setMessages] = useState(null);  
   const [loading, setLoading] = useState(true);
 
+  //daten von der datenbank in die messages array ubernehmen
   useEffect(() => {
     fetchData().then((data) => {
       setMessages(data);
       setLoading(false);
     });
   }, []);
+  //warten bis messages gefullt ist
   useEffect(() => {
     console.log(messages);
   }, [messages]);
@@ -104,7 +106,8 @@ function Chat() {
   if (messages == null) {
     return <div>Loading...</div>;
   }
-
+//      {messages && messages.map(msg => <ChatMsg side={"right"} message={[msg.text]} />)}
+ // hier warscheinlich was machen so dass es funktioniert 
   return (
     <div className="Chat">
       {messages && messages.map(msg => <ChatMsg side={"right"} message={[msg.text]} />)}
