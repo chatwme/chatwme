@@ -92,7 +92,6 @@ function Chat() {
 
   return (
     <div className="Chat">
-      
       <input onChange={handleChange} placeholder="say something nice" />
       <button onClick={handleSubmit} type="submit">🕊️</button>
     </div>
