@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ChatMsg from './chatMsg';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
@@ -57,7 +57,7 @@ function App() {
 
 const fetchData = async () => {
   const citiesRef = firestore.collection('messages');
-  const snapshot = await citiesRef.where('userid', '==', 123).get();
+  const snapshot = await citiesRef.orderBy('time').limit().get();
 
   if (snapshot.empty) {
     console.log('Keine übereinstimmenden Dokumente.');
@@ -88,10 +88,26 @@ function Chat() {
     // 👇 Get input value from "event" and copy to message variable
     setMessage(event.target.value);
   };
-  fetchData().then(data => console.log(data));
+  const [messages, setMessages] = useState(null);  
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchData().then((data) => {
+      setMessages(data);
+      setLoading(false);
+    });
+  }, []);
+  useEffect(() => {
+    console.log(messages);
+  }, [messages]);
+
+  if (messages == null) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="Chat">
+      {messages && messages.map(msg => <ChatMsg side={"right"} message={[msg.text]} />)}
       <input onChange={handleChange} placeholder="say something nice" />
       <button onClick={handleSubmit} type="submit">🕊️</button>
     </div>
