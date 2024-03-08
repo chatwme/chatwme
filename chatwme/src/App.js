@@ -30,22 +30,6 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-
-      </header>
-
       <section>
         {user ? <Chat /> : <SignIn />}
       </section>
@@ -62,7 +46,7 @@ const fetchData = async () => {
   if (snapshot.empty) {
     console.log('Keine übereinstimmenden Dokumente.');
     return [];
-  }  
+  }
 
   const data = [];
   snapshot.forEach(doc => {
@@ -88,29 +72,28 @@ function Chat() {
     // 👇 Get input value from "event" and copy to message variable
     setMessage(event.target.value);
   };
-  const [messages, setMessages] = useState(null);  
+  const [messages, setMessages] = useState(null);
   const [loading, setLoading] = useState(true);
 
   //daten von der datenbank in die messages array ubernehmen
   useEffect(() => {
-    fetchData().then((data) => {
+    const unsubscribe = messagesRef.orderBy('time', 'desc').limit(10).onSnapshot(snapshot => {
+      const data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
       setMessages(data);
       setLoading(false);
     });
+
+    // Clean up subscription on unmount
+    return () => unsubscribe();
   }, []);
-  //warten bis messages gefullt ist
-  useEffect(() => {
-    console.log(messages);
-  }, [messages]);
 
   if (messages == null) {
     return <div>Loading...</div>;
   }
-//      {messages && messages.map(msg => <ChatMsg side={"right"} message={[msg.text]} />)}
- // hier warscheinlich was machen so dass es funktioniert 
+
   return (
     <div className="Chat">
-      {messages && messages.map(msg => <ChatMsg side={"right"} message={[msg.text]} />)}
+      {messages && [...messages].reverse().map(msg => <ChatMsg side={msg.userid === auth.currentUser.uid ? "right" : "left"} messages={[msg.text]} />)}{/*array umdrehen und anzeigen */}
       <input onChange={handleChange} placeholder="say something nice" />
       <button onClick={handleSubmit} type="submit">🕊️</button>
     </div>
