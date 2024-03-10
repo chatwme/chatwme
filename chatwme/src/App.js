@@ -48,24 +48,22 @@ function Chat() {
     setMessage(event.target.value);
   }
 
-  function handleSubmit(event) {//beim druecken vom Button submit ausgefuehrt
+  function handleSubmit(event) {//beim druecken vom Button wird submit ausgefuhrt
     event.preventDefault();
-    //console.log('You clicked submit. with ', message);
     //ein neues document in der firebase datenbank messages anlegen mit jeweiligen argumenten
     const res = messagesRef.add({ text: message, userid: auth.currentUser.uid, time: serverTimestamp(), displayName: auth.currentUser.displayName });
-    //console.log('Added document with ID: ', res.id);
     setMessage('');//loesche die nachricht aus dem textfeld
   }
   //wenn eine Tastegedrueckt wird
   const handleKeyPress = (event) => {
-    if(event.key === 'Enter'){//wenn die Taste enter ist schcke die nachricht im textfeld
+    if(event.key === 'Enter'){//wenn die Taste enter ist schicke die nachricht im textfeld
       handleSubmit(event);
     }
   };
 
-  //daten von der datenbank in die messages array uebernehmen, letzten 10 nachrichten sortiert nach der zeit
+  //daten von der datenbank in die messages array uebernehmen, letzten 20 nachrichten sortiert nach der zeit
   useEffect(() => {
-    const unsubscribe = messagesRef.orderBy('time', 'desc').limit(10).onSnapshot(snapshot => {//limit nicht andern oder unten auch andern
+    const unsubscribe = messagesRef.orderBy('time', 'desc').limit(20).onSnapshot(snapshot => {//limit nicht aendern oder unten auch aendern
       const data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
       setMessages(data);
     });
@@ -80,11 +78,11 @@ function Chat() {
 
   return (
     <div className="Chat">
-      {messages && [...messages].reverse().map((msg, i) => {//umdrehen des arrays um in der richtigen reinfolge die nachrichten anzuzeigen
-        const previousMsg = i > 0 ? messages[10- i] : null;//10- i weil array is andersrum 10 weil wir letzten 10 messages abrufen
+      {messages && [...messages].reverse().map((msg, i) => {//umdrehen des arrays um in der richtigen reihenfolge die nachrichten anzuzeigen
+        const previousMsg = i > 0 ? messages[20- i] : null;//20- i weil array ist andersherum 20 weil wir letzten 20 messages abrufen
         return (//anzeigen von den nachrichten in dem ChatMsg style
           <ChatMsg
-            side={msg.userid === auth.currentUser.uid ? "right" : "left"}//check ob der jetzige nutzer die nachricht abgeschickt hat dann rechts anzeigen
+            side={msg.userid === auth.currentUser.uid ? "right" : "left"}//check ob der jetzige nutzer die nachricht abgeschickt hat, dann rechts anzeigen
             messages={[msg.text]}
             username={(previousMsg && msg.userid === previousMsg.userid) ?  "" : msg.displayName }//check ob die vorherige nachricht vom gleichen benutzer gesendet wurde, dann den Nutzernamen nicht anzeigen
           />

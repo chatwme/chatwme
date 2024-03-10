@@ -16,27 +16,10 @@ import {
 } from "react-router-dom";
 
 
-//const firestore = getFirestore(firebaseApp);
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: (
-      <div>
-      </div>
-    ),
-  },
-  {
-    path: "about",
-    element: <div>
-    </div>,
-  },
-]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <>
-   <RouterProvider router={router} />
     <React.StrictMode>
     <App />
   </React.StrictMode></>
