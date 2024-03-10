@@ -4,16 +4,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-//import {initializeApp} from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
-//import {getFirestore} from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
-
-import { createRoot } from "react-dom/client";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Route,
-  Link,
-} from "react-router-dom";
 
 
 
