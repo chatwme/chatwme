@@ -1,3 +1,6 @@
+// dieser Code wird nicht benutzt da wir andere und schnellere Möglichkeiten gefunden haben 
+
+
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
