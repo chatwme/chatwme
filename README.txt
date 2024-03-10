@@ -47,3 +47,6 @@ Anleitung zur Installation und Integration:
 3. Laufwerk von react auswählen mit dem Befehl 'cd chatwme'
 4. Website aufrufen mit dem Befehl 'npm start'  
 
+Hinweis: funktioniert nur über einen Local Host 
+
+Mögliche Bugs: Wenn das Starten mit dem Befehl 'npm start' nicht beim ersten Mal funktioniert, sollte es funktionieren, wenn man die Anwendung nochmal startet mit dem gleichen Befehl. Sonst gab es keine Probleme bei uns mit dem Starten.
