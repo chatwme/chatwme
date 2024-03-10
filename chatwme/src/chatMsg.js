@@ -9,6 +9,7 @@ import defaultChatMsgStyles from "./defaultChatMsgStyles.styles";
 const ChatMsg = withStyles(defaultChatMsgStyles, { name: "ChatMsg" })(
   (props) => {
     const {
+      username,
       classes,
       avatar,
       messages,
@@ -49,6 +50,18 @@ const ChatMsg = withStyles(defaultChatMsgStyles, { name: "ChatMsg" })(
             return (
               // eslint-disable-next-line react/no-array-index-key
               <div key={msg.id || i} className={classes[`${side}Row`]}>
+
+                <Typography
+                  align={side}
+                  {...TypographyProps}
+                  className={cx(
+                    classes.username, // Hier verwenden wir einen neuen Stil für den Nutzernamen
+                    TypographyProps.className
+                  )}
+                >
+                  {username} {/* Hier fügen wir den Nutzernamen hinzu */}
+                </Typography>
+
                 <Typography
                   align={side}
                   {...TypographyProps}

@@ -33,7 +33,7 @@ function App() {
         {user ? <Chat /> : <SignIn />}
       </section>
     </div>
-          //wenn User angemeldet sind wird "Chat" gezeigt, ansonsten "SignIn"
+    //wenn User angemeldet sind wird "Chat" gezeigt, ansonsten "SignIn"
   );
 }
 
@@ -63,7 +63,7 @@ function Chat() {
   function handleSubmit(e) {
     e.preventDefault();
     console.log('You clicked submit. with ', message);
-    const res = messagesRef.add({ text: message, userid: auth.currentUser.uid, time: serverTimestamp() });
+    const res = messagesRef.add({ text: message, userid: auth.currentUser.uid, time: serverTimestamp(), displayName: auth.currentUser.displayName });
     console.log('Added document with ID: ', res.id);
   }
 
@@ -74,9 +74,9 @@ function Chat() {
   const [messages, setMessages] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  //daten von der datenbank in die messages array uebernehmen
+  //daten von der datenbank in die messages array uebernehmen letzten 10 nachrichten
   useEffect(() => {
-    const unsubscribe = messagesRef.orderBy('time', 'desc').limit(10).onSnapshot(snapshot => {
+    const unsubscribe = messagesRef.orderBy('time', 'desc').limit(10).onSnapshot(snapshot => {//limit nicht andern oder unten auch andern
       const data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
       setMessages(data);
       setLoading(false);
@@ -92,7 +92,16 @@ function Chat() {
 
   return (
     <div className="Chat">
-      {messages && [...messages].reverse().map(msg => <ChatMsg side={msg.userid === auth.currentUser.uid ? "right" : "left"} messages={[msg.text]} />)}{/*array umdrehen und anzeigen */}
+      {messages && [...messages].reverse().map((msg, i) => {
+        const previousMsg = i > 0 ? messages[10- i] : null;//10- i weil array is andersrum 10 weil wir letzten 10 messages abrufen
+        return (
+          <ChatMsg
+            side={msg.userid === auth.currentUser.uid ? "right" : "left"}
+            messages={[msg.text]}
+            username={(previousMsg && msg.userid === previousMsg.userid) ?  "" : msg.displayName }
+          />
+        );
+      })}
       <input onChange={handleChange} placeholder="say something nice" />
       <button onClick={handleSubmit} type="submit">🕊️</button>
     </div>
@@ -100,7 +109,7 @@ function Chat() {
 }
 
 function SignIn() {
-  
+
   //firebase Coding für Google-Login
   const signInWithGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
