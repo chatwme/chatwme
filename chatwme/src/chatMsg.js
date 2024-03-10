@@ -1,3 +1,4 @@
+// Dieser Code ist aus dem Internet kopiert, damit wir uns nicht um das Visuelle kümmern müssen
 import React from "react";
 import PropTypes from "prop-types";
 import cx from "clsx";

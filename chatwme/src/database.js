@@ -33,7 +33,7 @@ firebase.initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get a reference to the service
 const db = firebase.firestore();
 
-
+// Klasse erstellen mit notwendiggen Login informationen 
 class Login {
     constructor (login_name, login_password, login_id ) {
         this.login_name = login_name;
@@ -63,28 +63,43 @@ class Login {
     setlogin_id(newid){
     	this.login_id = newid;
     }
+
 }
-    const firestore = getFirestore();
 
-    const login = doc(firestore, 'special');
-    function writeLogin(){
-        const docData = {
-            name: 'Jonas',
-            password: '1234',
-            id: '187'
-        };
-        setDoc(login, docData); 
-    }
+
+function uploadToFirestore(loginObject) {
     
-writeLogin ();
+    const db = firebase.firestore(); // Referenz auf die Firestore-Datenbank erstellen
+    
+    
+    const loginsRef = db.collection('logins'); // Eine neue Sammlung "logins" in der Firestore-Datenbank erstellen
+    
+    // Ein neues Dokument mit den Attributen des Login-Objekts erstellen und in die Sammlung hochladen
+    loginsRef.add({
+        login_name: loginObject.getlogin_name(),
+        login_password: loginObject.getlogin_password(),
+        login_id: loginObject.getlogin_id()
+    })
+    .then((docRef) => {
+        console.log("Dokument mit der ID:", docRef.id, "erfolgreich hochgeladen");
+    })
+    .catch((error) => {
+        console.error("Fehler beim Hochladen des Dokuments:", error);
+    });
+}
 
-// Firestore data converter
-// var loginconverter = {
-//     toFirestore: function(login) {
-//         return {
-//             login_name: login.login_name,
-//             login_password: login.login_password,
-//             login_id: login.login_id
-//             };
+
+//     const firestore = getFirestore();    // Test 
+
+//     const login = doc(firestore, 'special');
+//     function writeLogin(){
+//         const docData = {
+//             name: 'Jonas',
+//             password: '1234',
+//             id: '187'
+//         };
+//         setDoc(login, docData); 
 //     }
-// }
+    
+// writeLogin ();
+

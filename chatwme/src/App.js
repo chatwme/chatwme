@@ -48,7 +48,7 @@ function Chat() {
     setMessage(event.target.value);
   }
 
-  function handleSubmit(event) {//beim druecken vom Button submit ausgefuhrt
+  function handleSubmit(event) {//beim druecken vom Button submit ausgefuehrt
     event.preventDefault();
     //console.log('You clicked submit. with ', message);
     //ein neues document in der firebase datenbank messages anlegen mit jeweiligen argumenten
