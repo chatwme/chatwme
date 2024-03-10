@@ -23,7 +23,7 @@ firebase.initializeApp({
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
-
+//main methode
 function App() {
   const [user] = useAuthState(auth);
 
@@ -37,68 +37,51 @@ function App() {
   );
 }
 
-//ungenutzt
-/*const fetchData = async () => {
-  const citiesRef = firestore.collection('messages');
-  const snapshot = await citiesRef.orderBy('time').limit().get();
-
-  if (snapshot.empty) {
-    console.log('Keine übereinstimmenden Dokumente.');
-    return [];
-  }
-
-  const data = [];
-  snapshot.forEach(doc => {
-    data.push(doc.data());
-  });
-
-  return data;
-}*/
 
 function Chat() {
-  const messagesRef = firestore.collection("messages");
+
+  const messagesRef = firestore.collection("messages");//connecten mit der messages datenbank in firebase
   const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState(null);
 
-
-  function handleSubmit(e) {
+  function handleSubmit(e) {//beim drucken vom Button submit ausgefuhrt
     e.preventDefault();
-    console.log('You clicked submit. with ', message);
+    //console.log('You clicked submit. with ', message);
+    //ein neues document in der firebase datenbank messages anlegen mit jeweiligen argumenten
     const res = messagesRef.add({ text: message, userid: auth.currentUser.uid, time: serverTimestamp(), displayName: auth.currentUser.displayName });
-    console.log('Added document with ID: ', res.id);
+    //console.log('Added document with ID: ', res.id);
   }
 
   const handleChange = (event) => {
-    // 👇 Get input value from "event" and copy to message variable
+    //text eingabe in eine variable schreiben wir immer bei einer veraendrung des textes ausgefuhrt
     setMessage(event.target.value);
   };
-  const [messages, setMessages] = useState(null);
-  const [loading, setLoading] = useState(true);
 
-  //daten von der datenbank in die messages array uebernehmen letzten 10 nachrichten
+
+  //daten von der datenbank in die messages array uebernehmen, letzten 10 nachrichten sortiert nach der zeit
   useEffect(() => {
     const unsubscribe = messagesRef.orderBy('time', 'desc').limit(10).onSnapshot(snapshot => {//limit nicht andern oder unten auch andern
       const data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
       setMessages(data);
-      setLoading(false);
     });
 
-    // Clean up subscription on unmount
+    // warten bis alles copiert ist
     return () => unsubscribe();
   }, []);
-
+  //gucken ob messages ueberhaubt nachrichten enthaelt
   if (messages == null) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="Chat">
-      {messages && [...messages].reverse().map((msg, i) => {
+      {messages && [...messages].reverse().map((msg, i) => {//umdrehen des arrays um in der richtigen reinfolge die nachrichten anzuzeigen
         const previousMsg = i > 0 ? messages[10- i] : null;//10- i weil array is andersrum 10 weil wir letzten 10 messages abrufen
-        return (
+        return (//anzeigen von den nachrichten in dem ChatMsg style
           <ChatMsg
-            side={msg.userid === auth.currentUser.uid ? "right" : "left"}
+            side={msg.userid === auth.currentUser.uid ? "right" : "left"}//check ob der jetzige nutzer die nachricht abgeschickt hat dann rechts anzeigen
             messages={[msg.text]}
-            username={(previousMsg && msg.userid === previousMsg.userid) ?  "" : msg.displayName }
+            username={(previousMsg && msg.userid === previousMsg.userid) ?  "" : msg.displayName }//check ob die vorherige nachricht vom gleichen benutzer gesendet wurde, dann den Nutzernamen nicht anzeigen
           />
         );
       })}
