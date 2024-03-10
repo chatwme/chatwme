@@ -19,13 +19,13 @@ firebase.initializeApp({
   appId: "1:1095383936548:web:7683ba600a7abfef2072b1",
   measurementId: "G-XBPLV8MK6Z"
 })
-
+//initialisiere die firebase datenbank und google login
 const auth = firebase.auth();
-const firestore = firebase.firestore();
+const firestore = firebase.firestore(); 
 
 //main methode
 function App() {
-  const [user] = useAuthState(auth);
+  const [user] = useAuthState(auth);//in user wird geschriben ob der user eingelogt ist 
 
   return (
     <div className="App">
@@ -41,22 +41,23 @@ function App() {
 function Chat() {
 
   const messagesRef = firestore.collection("messages");//connecten mit der messages datenbank in firebase
-  const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState(null);
+  const [message, setMessage] = useState('');//wird gespeichert was im textfeld steht
+  const [messages, setMessages] = useState(null);//alle nachrichten aus der datenbank
 
-  function handleSubmit(e) {//beim drucken vom Button submit ausgefuhrt
-    e.preventDefault();
+  function handleSubmit(event) {//beim druecken vom Button submit ausgefuhrt
+    event.preventDefault();
     //console.log('You clicked submit. with ', message);
     //ein neues document in der firebase datenbank messages anlegen mit jeweiligen argumenten
     const res = messagesRef.add({ text: message, userid: auth.currentUser.uid, time: serverTimestamp(), displayName: auth.currentUser.displayName });
     //console.log('Added document with ID: ', res.id);
+    setMessage('');//loesche die nachricht aus dem textfeld
   }
-
-  const handleChange = (event) => {
-    //text eingabe in eine variable schreiben wir immer bei einer veraendrung des textes ausgefuhrt
-    setMessage(event.target.value);
+  //wenn eine Tastegedrueckt wird
+  const handleKeyPress = (event) => {
+    if(event.key === 'Enter'){//wenn die Taste enter ist schcke die nachricht im textfeld
+      handleSubmit(event);
+    }
   };
-
 
   //daten von der datenbank in die messages array uebernehmen, letzten 10 nachrichten sortiert nach der zeit
   useEffect(() => {
@@ -64,10 +65,10 @@ function Chat() {
       const data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
       setMessages(data);
     });
-
     // warten bis alles copiert ist
     return () => unsubscribe();
   }, []);
+
   //gucken ob messages ueberhaubt nachrichten enthaelt
   if (messages == null) {
     return <div>Loading...</div>;
@@ -85,7 +86,7 @@ function Chat() {
           />
         );
       })}
-      <input onChange={handleChange} placeholder="say something nice" />
+      <input value={message} onKeyPress={handleKeyPress}  placeholder="say something nice" />{/*Text im texfeld wird in message copiert*/}
       <button onClick={handleSubmit} type="submit">🕊️</button>
     </div>
   );
