@@ -31,7 +31,7 @@ function App() {
   return (
     <div className="App">
       <section>
-        {user ? <Chat /><SignOut/> : <SignIn />}
+        {user ? <Chat /> : <SignIn />}
       </section>
     </div>
           //wenn User angemeldet sind wird "Chat" gezeigt, ansonsten "SignIn"
