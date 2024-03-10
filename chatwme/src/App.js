@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { useState, useEffect } from 'react';
 import ChatMsg from './chatMsg';
@@ -12,6 +11,7 @@ import { useCollectionData, useCollectionDataOnce } from 'react-firebase-hooks/f
 import { serverTimestamp, getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
 
 firebase.initializeApp({
+  //Verbindung zu firebase
   apiKey: "AIzaSyB6ALPlZWpPpYiwt5VNzx5LDHaUIo0V91o",
   authDomain: "chatwme-6c657.firebaseapp.com",
   projectId: "chatwme-6c657",
@@ -31,11 +31,10 @@ function App() {
   return (
     <div className="App">
       <section>
-        {user ? <Chat /> : <SignIn />}
+        {user ? <Chat /><SignOut/> : <SignIn />}
       </section>
-
     </div>
-
+          //wenn User angemeldet sind wird "Chat" gezeigt, ansonsten "SignIn"
   );
 }
 
@@ -55,8 +54,8 @@ const fetchData = async () => {
 
   return data;
 }
+
 function Chat() {
-  //initialize variables
   const messagesRef = firestore.collection("messages");
   const [message, setMessage] = useState('');
 
@@ -75,7 +74,7 @@ function Chat() {
   const [messages, setMessages] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  //daten von der datenbank in die messages array ubernehmen
+  //daten von der datenbank in die messages array uebernehmen
   useEffect(() => {
     const unsubscribe = messagesRef.orderBy('time', 'desc').limit(10).onSnapshot(snapshot => {
       const data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
@@ -101,6 +100,8 @@ function Chat() {
 }
 
 function SignIn() {
+  
+  //firebase Coding für Google-Login
   const signInWithGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider);
@@ -113,10 +114,10 @@ function SignIn() {
 
 function SignOut() {
   return auth.currentUser && (
-
     <button onClick={() => auth.SignOut()}>Sign Out</button>
   )
 }
+
 function writeLogin() {
   const login = firestore.doc(firestore, 'special');//du dummer nutten 
   const docData = {
