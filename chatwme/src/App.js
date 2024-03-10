@@ -44,6 +44,10 @@ function Chat() {
   const [message, setMessage] = useState('');//wird gespeichert was im textfeld steht
   const [messages, setMessages] = useState(null);//alle nachrichten aus der datenbank
 
+  const onChange=(event) => {
+    setMessage(event.target.value);
+  }
+
   function handleSubmit(event) {//beim druecken vom Button submit ausgefuhrt
     event.preventDefault();
     //console.log('You clicked submit. with ', message);
@@ -86,7 +90,7 @@ function Chat() {
           />
         );
       })}
-      <input value={message} onKeyPress={handleKeyPress}  placeholder="say something nice" />{/*Text im texfeld wird in message copiert*/}
+      <input value={message} onChange={onChange} onKeyPress={handleKeyPress}  placeholder="say something nice" />{/*Text im texfeld wird in message copiert*/}
       <button onClick={handleSubmit} type="submit">🕊️</button>
     </div>
   );
