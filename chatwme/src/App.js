@@ -88,8 +88,8 @@ function Chat() {
           />
         );
       })}
-      <input value={message} onChange={onChange} onKeyPress={handleKeyPress}  placeholder="say something nice" />{/*Text im texfeld wird in message copiert*/}
-      <button onClick={handleSubmit} type="submit">🕊️</button>
+      <input value={message} onChange={onChange} onKeyPress={handleKeyPress}  placeholder="Schreibe einen Text" />{/*Text im texfeld wird in message copiert*/}
+      <button onClick={handleSubmit} type="submit"><img src="https://cdn-icons-png.flaticon.com/512/149/149446.png" width="10" height="10"/></button>
     </div>
   );
 }
