@@ -7,8 +7,7 @@ import 'firebase/compat/firestore';
 import 'firebase/analytics';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollectionData, useCollectionDataOnce } from 'react-firebase-hooks/firestore';
-import { serverTimestamp, getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
+import { serverTimestamp } from 'firebase/firestore';
 
 firebase.initializeApp({
   //Verbindung zu firebase
@@ -38,7 +37,8 @@ function App() {
   );
 }
 
-const fetchData = async () => {
+//ungenutzt
+/*const fetchData = async () => {
   const citiesRef = firestore.collection('messages');
   const snapshot = await citiesRef.orderBy('time').limit().get();
 
@@ -53,7 +53,7 @@ const fetchData = async () => {
   });
 
   return data;
-}
+}*/
 
 function Chat() {
   const messagesRef = firestore.collection("messages");
@@ -118,15 +118,4 @@ function SignOut() {
   )
 }
 
-function writeLogin() {
-  const login = firestore.doc(firestore, 'special');//du dummer nutten 
-  const docData = {
-    name: 'Jonas',
-    password: '1234',
-    id: '187'
-  };
-  firestore.setDoc(login, docData);
-}
-
 export default App;
-//export {firebase, App,}
